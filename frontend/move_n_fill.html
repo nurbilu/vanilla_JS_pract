@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .moving-element {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            position: relative;
+            animation-name: move;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        @keyframes move {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: 100%;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <script>
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var width = 50;
+        var height = 50;
+        var dx = (Math.random() - 0.5) * 4;
+        var dy = (Math.random() - 0.5) * 4;
+        var alpha = 0; // Alpha for transparency
+        var fillDuration = 10000; // 10 seconds in milliseconds
+        var startTime = Date.now();
+
+        const drawSquare = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (Date.now() - startTime < fillDuration) {
+                alpha = (Date.now() - startTime) / fillDuration;
+            } else {
+                alpha = 1;
+                startTime = Date.now();
+            }
+
+            ctx.fillStyle = 'rgba(255, 0, 0,' + alpha + ')'; 
+            ctx.fillRect(x, y, width, height);
+
+            ctx.strokeStyle = 'black'; 
+            ctx.strokeRect(x, y, width, height); 
+
+            x += dx;
+            y += dy;
+            if (x + width > canvas.width || x < 0) {
+                dx = -dx;
+            }
+            if (y + height > canvas.height || y < 0) {
+                dy = -dy;
+            }
+
+            requestAnimationFrame(drawSquare);
+        };
+
+        drawSquare();
+    </script>
+
+
+
+</body>
+
+</html>

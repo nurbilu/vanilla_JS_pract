@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Student List Manager</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1>Student List Manager</h1>
+                <div>
+                    <input type="text" id="studentName" placeholder="Student Name">
+                    <input type="number" id="studentAge" placeholder="Student Age">
+                    <button type="button" class="btn btn-primary btn-lg" onclick="addStudent()">Add Student</button>
+                    <button id="showHideButton" type="button" class="btn btn-info">Show/Hide Students</button>
+                </div>
+                <div id="studentList">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Student rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initial students array
+        let students = [];
+
+        // Function to add a new student
+        const addStudent = () => {
+            const name = document.getElementById('studentName').value;
+            const age = document.getElementById('studentAge').value;
+
+            if (name && age) {
+                students.push({ name, age: parseInt(age, 10) });
+                saveStudentsToLocalStorage();
+                document.getElementById('studentName').value = '';
+                document.getElementById('studentAge').value = '';
+                displayStudents();
+                Toastify({
+                    text: "add Successful",
+                    duration: 3000
+                }).showToast();
+            } else {
+                Toastify({
+                    text: "Please enter both name and age.",
+                    duration: 3000
+                }).showToast();
+            }
+
+        }
+
+        // Function to save students to local storage
+        const saveStudentsToLocalStorage = () => localStorage.setItem('students', JSON.stringify(students));
+
+        const toggleListVisibility = () => {
+            const studentList = document.getElementById('studentList');
+            if (studentList.style.display === "none" || studentList.style.display === "") {
+                studentList.style.display = "block";
+            } else {
+                studentList.style.display = "none";
+            }
+        }
+
+        // Event listeners
+        document.getElementById('showHideButton').addEventListener("click", toggleListVisibility);
+        // Function to get students from local storage
+        const getStudentsFromLocalStorage = () => {
+            const studentsData = localStorage.getItem('students');
+            if (studentsData) {
+                students = JSON.parse(studentsData);
+                displayStudents();
+            }
+        }
+
+        // Function to display students on the page
+        const displayStudents = () => {
+            const studentListElement = document.querySelector('#studentList tbody');
+            studentListElement.innerHTML = students.map((student, index) => `
+            <tr>
+                <td>${student.name}</td>
+                <td>${student.age}</td>
+                <td>
+                    <button onclick="editStudent(${index})">Edit</button>
+                    <button onclick="deleteStudent(${index})">Delete</button>
+                </td>
+            </tr>
+            `).join('');
+        }
+
+        // Function to delete a student
+        const deleteStudent = (index) => {
+            const studentName = students[index].name;
+            students.splice(index, 1);
+            saveStudentsToLocalStorage();
+            displayStudents();
+            const stud_name = document.getElementById('studentName');
+            Toastify({
+                text: `${studentName} is Deleted`,
+                duration: 3000
+            }).showToast();
+        }
+        const editStudent = (index) => {
+            const student = students[index];
+            const newName = prompt("Enter new name", student.name);
+            const newAge = prompt("Enter new age", student.age);
+
+            if (newName !== null && newAge !== null) {
+                students[index] = { name: newName, age: parseInt(newAge, 10) };
+                saveStudentsToLocalStorage();
+                displayStudents();
+            } Toastify({
+                text: `${student.name} Edit Successful`,
+                duration: 3000
+            }).showToast();
+        }
+
+        getStudentsFromLocalStorage();
+    </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Input and Display Integer</title>
+</head>
+
+<body>
+    <input type="number" id="integerInput" placeholder="Enter an integer">
+    <button id="displayButton">Display Integer: <div id="displayArea"></div></button>
+    
+
+    <script>
+        // get data from the HTML elements
+        var integerInput = document.getElementById("integerInput");
+        var displayButton = document.getElementById("displayButton");
+        var displayArea = document.getElementById("displayArea");
+
+        // Function to display the entered integer
+        const displayInteger = () => {
+            var enteredValue = integerInput.value;
+            displayArea.textContent = enteredValue;
+        }
+
+        displayButton.addEventListener("click", displayInteger);
+    </script>
+</body>
+
+</html>

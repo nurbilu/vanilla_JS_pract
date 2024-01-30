@@ -1,0 +1,53 @@
+<head>
+    <title>Text Translator</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <h1>Translate Text</h1>
+    
+    <button onclick="translateText()">Translate</button>
+    <p>Translation: <span id="translResult"></span></p>
+
+    <script>
+        const translateText= async () => {
+            const encodedParams = new URLSearchParams();
+            encodedParams.append('from', 'auto');
+            encodedParams.append('to', 'en');
+            encodedParams.append('text', 'xin chào');
+
+            const options = {
+                method: 'POST',
+                url: 'https://google-translate113.p.rapidapi.com/api/v1/translator/text',
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                    'X-RapidAPI-Key': '8515a231dfmsh8dfc5d885202965p13ca56jsn728a290f9d4f',
+                    'X-RapidAPI-Host': 'google-translate113.p.rapidapi.com'
+                },
+                data: encodedParams
+            };
+            try {
+                const response = await axios.request(options);
+                const translation = response.data.translatedText;
+                document.getElementById("translResult").innerHTML = translation;
+            } catch (error) {
+                console.error(error);
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                document.getElementById("translResult").innerHTML = 'Error in translation';
+            }
+        }            
+    </script>
+</body>
+</html>

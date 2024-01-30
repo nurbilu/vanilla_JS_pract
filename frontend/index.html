@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Button Color Changer</title>
+
+    <style>
+        body {
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="colorButton">Change Color</button>
+
+    <script>
+        var button = document.getElementById("colorButton");
+        var isRed = true;
+
+       const toggleColor = () => {
+            if (isRed) {
+                button.style.backgroundColor = "red";
+                isRed = false;
+            } else {
+                button.style.backgroundColor = "blue";
+                isRed = true;
+            }
+        }
+
+        button.addEventListener("click", toggleColor);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .moving-element {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            position: relative;
+            animation-name: move;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        @keyframes move {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: 100%;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <script>
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var width = 50;
+        var height = 50;
+        var speed = 12;
+
+        function drawSquare() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            ctx.fillStyle = 'red';
+            ctx.fillRect(x, y, width, height); // Draw the square
+            requestAnimationFrame(drawSquare); // Repeat the drawing function
+        }
+
+        window.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'w': // Up
+                    y -= speed;
+                    break;
+                case 's': // Down
+                    y += speed;
+                    break;
+                case 'a': // Left
+                    x -= speed;
+                    break;
+                case 'd': // Right
+                    x += speed;
+                    break;
+            }
+
+            // Prevent the square from going out of bounds
+            x = Math.max(0, Math.min(x, canvas.width - width));
+            y = Math.max(0, Math.min(y, canvas.height - height));
+        });
+
+        drawSquare(); // Start the animation
+    </script>
+</body>
+</html>

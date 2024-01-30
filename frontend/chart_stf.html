@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Bar Charts</title>
+    <style>
+        canvas {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Function to create a single bar chart with random data
+        const createBarChart = (canvasId, data) => {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            const width = 40; // width of each bar
+            const gap = 10;  // gap between bars
+            const maxBarHeight = 300; // maximum height of a bar
+
+            // Clear existing canvas content
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw bars
+            for (let i = 0; i < data.length; i++) {
+                const barHeight = (data[i] / 100) * maxBarHeight;
+                ctx.fillStyle = '#007bff'; // bar color
+                ctx.fillRect(gap + (width + gap) * i, canvas.height - barHeight, width, barHeight);
+            }
+        }
+
+        // Generate 20 canvases with random data bar charts
+        window.onload = ()=>{
+            for (let i = 0; i < 20; i++) {
+                const canvasId = 'canvas' + i;
+                const canvasHtml = '<canvas id="' + canvasId + '" width="500" height="400"></canvas>';
+                document.body.innerHTML += canvasHtml;
+
+                // Generate random data for each bar chart
+                const data = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+                createBarChart(canvasId, data);
+            }
+        }
+    </script>
+</body>
+</html>

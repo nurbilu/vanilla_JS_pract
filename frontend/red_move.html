@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .moving-element {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            position: relative;
+            animation-name: move;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        @keyframes move {
+            0% {
+                left: 0;
+            }
+
+            50% {
+                left: 100%;
+            }
+
+            100% {
+                left: 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000;">
+        Your browser does not support the canvas element.
+    </canvas>
+
+    <script>
+        var canvas = document.getElementById('myCanvas');
+        var ctx = canvas.getContext('2d');
+        var x = Math.random() * canvas.width;
+        var y = Math.random() * canvas.height;
+        var width = 50;
+        var height = 50;
+        var dx = (Math.random() - 2) * 4;
+        var dy = (Math.random() - 1) * 4;
+
+        function drawSquare() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+            ctx.fillStyle = 'red';
+            ctx.fillRect(x, y, width, height); // Draw the square
+
+            // Update the square's position
+            x += dx;
+            y += dy;
+
+            // Check for canvas boundary collisions
+            if (x + width > canvas.width || x < 0) {
+                dx = -dx;
+            }
+            if (y + height > canvas.height || y < 0) {
+                dy = -dy;
+            }
+
+            requestAnimationFrame(drawSquare); // Repeat the drawing function
+        }
+
+        drawSquare(); // Start the animation
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>List of Items</title>
+</head>
+
+<body>
+    <input type="text" id="listItemInput" placeholder="Enter a new item">
+    <button id="addItemButton">Add Item</button>
+    <button id="showHideButton">Show/Hide List</button>
+    <ul id="itemList"></ul>
+
+    <script>
+        // Get references to the input, buttons, and list elements
+        var listItemInput = document.getElementById("listItemInput");
+        var addItemButton = document.getElementById("addItemButton");
+        var showHideButton = document.getElementById("showHideButton");
+        var itemList = document.getElementById("itemList");
+
+        // Function to add an item to the list and store in local storage
+        const addItem = () => {
+            var newItemText = listItemInput.value;
+
+            if (newItemText.trim() !== "") {
+                var li = document.createElement("li");
+                li.textContent = newItemText;
+                itemList.appendChild(li);
+
+                var storedItems = localStorage.getItem("items");
+                var items = storedItems ? JSON.parse(storedItems) : [];
+                items.push(newItemText);
+                localStorage.setItem("items", JSON.stringify(items));
+
+                listItemInput.value = "";
+            }
+        }
+
+        // Function to show/hide the list
+        const toggleListVisibility = () => {
+            if (itemList.style.display === "none" || itemList.style.display === "") {
+                itemList.style.display = "block";
+            } else {
+                itemList.style.display = "none";
+            }
+        }
+
+        addItemButton.addEventListener("click", addItem);
+        showHideButton.addEventListener("click", toggleListVisibility);
+
+        var storedItems = localStorage.getItem("items");
+        if (storedItems) {
+            var items = JSON.parse(storedItems);
+            items.forEach(function (itemText) {
+                var li = document.createElement("li");
+                li.textContent = itemText;
+                itemList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+
+</html>
